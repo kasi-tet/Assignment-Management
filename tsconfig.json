@@ -4,6 +4,7 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "jsx": "react-jsx"  // ✅ Add this line
   }
 }
