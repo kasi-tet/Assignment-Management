@@ -1,5 +1,4 @@
-
-import  { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useAssignments } from '../../hooks/useAssignments';
 import { Layout } from '../common/Layout';
 import { LoadingSpinner } from '../common/LoadingSpinner';
@@ -7,7 +6,7 @@ import { DashboardStats } from './DashboardStats';
 import { AssignmentList } from './AssignmentList';
 import { SubmissionList } from './SubmissionList';
 import { CreateAssignmentModal } from './CreateAssignmentModal';
-import { Assignment, Submission } from '../../types/assignment';
+import { Assignment, Submission } from '../../data/mockData';
 
 export const AdminDashboard: React.FC = () => {
   const {
@@ -88,11 +87,12 @@ export const AdminDashboard: React.FC = () => {
       title="Assignment Manager"
       subtitle="Admin Dashboard - Manage assignments and review submissions"
       actions={
-        <div className="flex items-center space-x-4">
-          <div className="flex bg-gray-100 rounded-lg p-1">
+        <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 sm:gap-4 w-full xs:w-auto">
+          {/* Tab Navigation - Mobile responsive */}
+          <div className="flex bg-gray-100 rounded-lg p-1 w-full xs:w-auto">
             <button
               onClick={() => setActiveTab('assignments')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+              className={`flex-1 xs:flex-none px-3 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
                 activeTab === 'assignments'
                   ? 'bg-white text-gray-900 shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
@@ -102,7 +102,7 @@ export const AdminDashboard: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab('submissions')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+              className={`flex-1 xs:flex-none px-3 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
                 activeTab === 'submissions'
                   ? 'bg-white text-gray-900 shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
@@ -111,31 +111,40 @@ export const AdminDashboard: React.FC = () => {
               Submissions
             </button>
           </div>
+          
+          {/* Create Button - Mobile responsive */}
           <button
             onClick={() => setIsCreateModalOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-colors whitespace-nowrap w-full xs:w-auto flex items-center justify-center"
           >
+            <svg className="w-4 h-4 mr-1 sm:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
             Create Assignment
           </button>
         </div>
       }
     >
+      {/* Remove the extra container divs that might be causing issues */}
       <DashboardStats stats={dashboardStats} />
 
-      {activeTab === 'assignments' ? (
-        <AssignmentList
-          assignments={assignments}
-          onEdit={handleEditAssignment}
-          onDelete={deleteAssignment}
-          submissionsCount={submissionsCount}
-        />
-      ) : (
-        <SubmissionList
-          submissions={submissions}
-          assignments={assignments}
-          onReview={handleReviewSubmission}
-        />
-      )}
+      {/* Main Content Area - Simplified */}
+      <div className="mt-6"> {/* Use margin instead of complex flexbox */}
+        {activeTab === 'assignments' ? (
+          <AssignmentList
+            assignments={assignments}
+            onEdit={handleEditAssignment}
+            onDelete={deleteAssignment}
+            submissionsCount={submissionsCount}
+          />
+        ) : (
+          <SubmissionList
+            submissions={submissions}
+            assignments={assignments}
+            onReview={handleReviewSubmission}
+          />
+        )}
+      </div>
 
       <CreateAssignmentModal
         isOpen={isCreateModalOpen}

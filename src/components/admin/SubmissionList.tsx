@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Submission, Assignment } from '../../types/assignment';
+import { Submission, Assignment } from '../../data/mockData'; // Updated import path
 import { CheckCircleIcon, ClockIcon, ExclamationCircleIcon, EyeIcon } from '@heroicons/react/24/outline';
 
 interface SubmissionListProps {
@@ -77,28 +76,38 @@ export const SubmissionList: React.FC<SubmissionListProps> = ({
     });
   };
 
+  const formatDateMobile = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   return (
     <div className="bg-white shadow-sm rounded-lg border border-gray-200">
-      <div className="px-6 py-4 border-b border-gray-200">
-        <div className="flex justify-between items-center">
+      {/* Header - Mobile responsive */}
+      <div className="px-4 sm:px-6 py-4 border-b border-gray-200">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-3 sm:space-y-0">
           <h3 className="text-lg font-semibold text-gray-900">Submissions</h3>
-          <div className="flex space-x-4">
+          <div className="flex flex-col xs:flex-row xs:space-x-2 sm:space-x-4 space-y-2 xs:space-y-0">
             <select
               value={assignmentFilter}
               onChange={(e) => setAssignmentFilter(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              className="w-full xs:w-auto px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
             >
               <option value="all">All Assignments</option>
               {assignments.map(assignment => (
                 <option key={assignment.id} value={assignment.id}>
-                  {assignment.title}
+                  {assignment.title.length > 30 ? assignment.title.substring(0, 30) + '...' : assignment.title}
                 </option>
               ))}
             </select>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              className="w-full xs:w-auto px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
             >
               <option value="all">All Status</option>
               <option value="pending">Pending</option>
@@ -118,64 +127,93 @@ export const SubmissionList: React.FC<SubmissionListProps> = ({
           const statusLabel = getStatusConfig(submission.status).label;
 
           return (
-            <div key={submission.id} className="px-6 py-4 hover:bg-gray-50 transition-colors">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className={`p-2 rounded-full ${statusBgColor}`}>
-                    <StatusIcon className={`h-5 w-5 ${statusColor}`} />
-                  </div>
-                  <div>
-                    <div className="flex items-center space-x-2">
-                      <span className="font-semibold text-gray-900">{submission.memberName}</span>
-                      <span className="text-gray-400">•</span>
-                      <span className="text-sm text-gray-600">{submission.memberEmail}</span>
+            <div key={submission.id} className="px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
+              {/* Mobile: Stacked layout, Desktop: Side by side */}
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-3 sm:space-y-0">
+                {/* Left content - Member info and submission details */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start space-x-3">
+                    {/* Status icon */}
+                    <div className={`p-2 rounded-full ${statusBgColor} flex-shrink-0`}>
+                      <StatusIcon className={`h-4 w-4 sm:h-5 sm:w-5 ${statusColor}`} />
                     </div>
-                    <p className="text-sm text-gray-700 mt-1">
-                      <strong>{getAssignmentTitle(submission.assignmentId)}</strong>
-                    </p>
-                    <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                      {submission.content}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-2">
-                      Submitted {formatDate(submission.submittedAt)}
-                    </p>
+                    
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      {/* Member info row */}
+                      <div className="flex flex-col xs:flex-row xs:items-center xs:space-x-2 space-y-1 xs:space-y-0">
+                        <span className="font-semibold text-gray-900 text-sm sm:text-base truncate">
+                          {submission.memberName}
+                        </span>
+                        <span className="hidden xs:inline text-gray-400">•</span>
+                        <span className="text-xs sm:text-sm text-gray-600 truncate">
+                          {submission.memberEmail}
+                        </span>
+                      </div>
+
+                      {/* Assignment title */}
+                      <p className="text-sm text-gray-700 mt-1 sm:mt-1">
+                        <strong className="text-xs sm:text-sm">
+                          {getAssignmentTitle(submission.assignmentId)}
+                        </strong>
+                      </p>
+
+                      {/* Submission content - truncated on mobile */}
+                      <p className="text-xs sm:text-sm text-gray-600 mt-1 line-clamp-2 sm:line-clamp-2">
+                        {submission.content}
+                      </p>
+
+                      {/* Date - different format for mobile */}
+                      <p className="text-xs text-gray-500 mt-2">
+                        Submitted <span className="sm:hidden">{formatDateMobile(submission.submittedAt)}</span>
+                        <span className="hidden sm:inline">{formatDate(submission.submittedAt)}</span>
+                      </p>
+                    </div>
                   </div>
+
+                  {/* Feedback - always full width */}
+                  {submission.feedback && (
+                    <div className="mt-3 p-3 bg-gray-50 rounded-md border border-gray-200">
+                      <div className="text-sm font-medium text-gray-900 mb-1">Feedback:</div>
+                      <div className="text-sm text-gray-700 line-clamp-3">{submission.feedback}</div>
+                    </div>
+                  )}
                 </div>
 
-                <div className="flex items-center space-x-3">
+                {/* Right content - Status badges and actions */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-3 space-y-2 sm:space-y-0 sm:pl-4 sm:min-w-max">
+                  {/* Grade badge - if exists */}
                   {submission.grade && (
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 w-fit">
                       Grade: {submission.grade}%
                     </span>
                   )}
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${statusBgColor} ${statusColor}`}>
+                  
+                  {/* Status badge */}
+                  <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${statusBgColor} ${statusColor} w-fit`}>
                     {statusLabel}
                   </span>
+                  
+                  {/* Review button */}
                   <button
                     onClick={() => onReview(submission)}
-                    className="inline-flex items-center px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md text-sm font-medium transition-colors"
+                    className="inline-flex items-center justify-center px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md text-sm font-medium transition-colors w-full sm:w-auto"
                   >
-                    <EyeIcon className="h-4 w-4 mr-1" />
-                    Review
+                    <EyeIcon className="h-4 w-4 mr-1 flex-shrink-0" />
+                    <span className="sm:hidden">View</span>
+                    <span className="hidden sm:inline">Review</span>
                   </button>
                 </div>
               </div>
-
-              {submission.feedback && (
-                <div className="mt-3 p-3 bg-gray-50 rounded-md border border-gray-200">
-                  <div className="text-sm font-medium text-gray-900 mb-1">Feedback:</div>
-                  <div className="text-sm text-gray-700">{submission.feedback}</div>
-                </div>
-              )}
             </div>
           );
         })}
       </div>
 
       {filteredSubmissions.length === 0 && (
-        <div className="text-center py-12">
-          <div className="text-gray-400 text-lg">No submissions found</div>
-          <div className="text-gray-500 text-sm mt-2">
+        <div className="text-center py-8 sm:py-12">
+          <div className="text-gray-400 text-base sm:text-lg">No submissions found</div>
+          <div className="text-gray-500 text-xs sm:text-sm mt-2 px-4">
             {statusFilter !== 'all' || assignmentFilter !== 'all' 
               ? 'Try adjusting your filters' 
               : 'Submissions will appear here once members start submitting work'
