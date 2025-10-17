@@ -1,160 +1,51 @@
- 
-# React + TypeScript + Vite
+Assignment Manager Dashboard ============================
 
-This template provides a minimal setup to get React working in Vite with Hot Module Replacement (HMR), TypeScript support, and ESLint configured with sensible defaults.
+A modern, responsive, and animated dashboard for managing assignments and reviewing student submissions. Built with React, TypeScript, Tailwind CSS, and Headless UI — designed for modular architecture, team scalability, and production readiness.
 
-## Official React Plugins for Vite
+🚀 Features
 
-Vite supports two official plugins for React Fast Refresh:
+Strictly typed with TypeScript — zero any usage
 
-- **[@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react)**  
-  Uses [Babel](https://babeljs.io/) by default, or [Oxc](https://oxc.rs) when used with [`rolldown-vite`](https://vite.dev/guide/rolldown).
+Stylish, classic UI with Tailwind CSS and animated transitions
 
-- **[@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc)**  
-  Uses the high-performance [SWC](https://swc.rs/) compiler for Fast Refresh.
+Modular component structure for easy onboarding and reuse
 
-Both offer excellent developer experience—choose based on your preference for Babel (extensible) vs SWC (fast).
+Dashboard stats with real-time assignment/submission metrics
 
----
+Create, edit, delete assignments with modal support
 
-## React Compiler
+Review submissions with feedback, grading, and status updates
 
-> ⚠️ **Not enabled by default**
+Fully responsive across mobile, tablet, and desktop
 
-The [React Compiler](https://react.dev/learn/react-compiler/installation) is **not included** in this template due to its current impact on development and build performance in some setups.
+🛠️ Tech Stack
 
-To enable it, follow the [official installation guide](https://react.dev/learn/react-compiler/installation), which includes:
-- Installing `babel-plugin-react-compiler`
-- Configuring it via `@vitejs/plugin-react`'s Babel integration
-- Optional ESLint rule to identify non-optimizable components
+Frontend: React + TypeScript
 
-Example Vite config with React Compiler:
-```js
-// vite.config.ts
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+Styling: Tailwind CSS + Headless UI
 
-export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        plugins: ['babel-plugin-react-compiler'],
-      },
-    }),
-  ],
-})
-```
+State Management: Custom hooks (useAssignments)
 
----
+Build Tool: Vite
 
-## Expanding the ESLint Configuration
+Icons: Heroicons
 
-The base ESLint setup uses flat config with basic rules. For **production-grade type-aware linting**, enhance your `eslint.config.js` as follows:
+📁 Folder Structure src/ ├── features/ │ └── asignments_submissions/ │ ├── pages/ │ │ └── assignment_sub.tsx │ ├── components/ │ │ ├── admin/ │ │ │ ├── AssignmentList.tsx │ │ │ ├── SubmissionList.tsx │ │ │ ├── DashboardStats.tsx │ │ │ └── CreateAssignmentModal.tsx │ │ └── common/ │ │ ├── Layout.tsx │ │ └── LoadingSpinner.tsx │ ├── hooks/ │ │ └── useAssignments.ts │ └── types/ │ └── assignment.ts
 
-### Enable Type-Checked Rules
+📦 Installation
 
-```js
-// eslint.config.js
-import tseslint from 'typescript-eslint'
-import globals from 'globals'
+Clone the repo git clone https://github.com/your-username/assignment-manager.git cd assignment-manager
 
-export default tseslint.config(
-  { ignores: ['dist/'] },
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Replace basic recommended with type-aware versions
-      tseslint.configs.recommendedTypeChecked,
-      // Or use stricter rules:
-      // tseslint.configs.strictTypeChecked,
-      // And optionally add stylistic rules:
-      // tseslint.configs.stylisticTypeChecked,
-    ],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  }
-)
-```
+Install dependencies npm install
 
-> ✅ **Note**: Type-checked lint rules require `parserOptions.project` to reference your TypeScript config files.
+Start development server npm run dev
 
----
+🧪 Development Notes
 
-### Add React-Specific Lint Rules
+Tailwind directives are defined in index.css: @tailwind base; @tailwind components; @tailwind utilities;
 
-Install additional plugins for deeper React validation:
+All components follow strict prop typing and modular separation
 
-```bash
-npm install -D eslint-plugin-react-x eslint-plugin-react-dom
-```
+Transitions use @headlessui/react for smooth tab switching and modal animations
 
-Then update your ESLint config:
-
-```js
-// eslint.config.js
-import tseslint from 'typescript-eslint'
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-import globals from 'globals'
-
-export default tseslint.config(
-  { ignores: ['dist/'] },
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      tseslint.configs.recommendedTypeChecked,
-      reactX.configs['recommended-typescript'],
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  }
-)
-```
-
-These plugins provide:
-- Rules for React best practices (`react-x`)
-- DOM-specific safety and accessibility checks (`react-dom`)
-
----
-
-## Getting Started
-
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-2. Start dev server:
-   ```bash
-   npm run dev
-   ```
-
-3. Build for production:
-   ```bash
-   npm run build
-   ```
-
-4. Lint your code:
-   ```bash
-   npm run lint
-   ```
-
----
- 
+🧠 Author Built by Enock Muteti — Computer Science student, freelance developer, and lead planner for CISLU Tech Society platforms.
