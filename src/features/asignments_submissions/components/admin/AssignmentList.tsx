@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Assignment } from '../../data/mockData'; // Updated import path
+import type { Assignment } from '../../types/assignment';
 import { PencilIcon, TrashIcon, CalendarIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 
 interface AssignmentListProps {
@@ -37,7 +37,6 @@ export const AssignmentList: React.FC<AssignmentListProps> = ({
 
   return (
     <div className="bg-white shadow-sm rounded-lg border border-gray-200">
-      {/* Header - Mobile responsive */}
       <div className="px-4 sm:px-6 py-4 border-b border-gray-200">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-3 sm:space-y-0">
           <h3 className="text-lg font-semibold text-gray-900">Assignments</h3>
@@ -62,22 +61,17 @@ export const AssignmentList: React.FC<AssignmentListProps> = ({
 
           return (
             <div key={assignment.id} className="px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors">
-              {/* Mobile layout: Stacked */}
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start space-y-3 sm:space-y-0">
-                {/* Left content */}
                 <div className="flex-1 min-w-0">
-                  {/* Title and actions row */}
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0 mr-3">
                       <h4 className="font-semibold text-gray-900 text-base sm:text-lg truncate">
                         {assignment.title}
                       </h4>
-                      {/* Description - hidden on very small screens, shown on sm+ */}
                       <p className="text-gray-600 mt-1 sm:mt-2 text-sm leading-relaxed line-clamp-2 sm:line-clamp-3">
                         {assignment.description}
                       </p>
                     </div>
-                    {/* Action buttons - always visible */}
                     <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
                       <button
                         onClick={() => onEdit(assignment)}
@@ -96,7 +90,6 @@ export const AssignmentList: React.FC<AssignmentListProps> = ({
                     </div>
                   </div>
 
-                  {/* Stats - Mobile optimized */}
                   <div className="flex flex-col xs:flex-row xs:items-center xs:space-x-4 space-y-2 xs:space-y-0 mt-3 text-sm text-gray-500">
                     <div className="flex items-center space-x-1.5">
                       <CalendarIcon className="h-4 w-4 flex-shrink-0" />
@@ -113,7 +106,6 @@ export const AssignmentList: React.FC<AssignmentListProps> = ({
                   </div>
                 </div>
 
-                {/* Status badges - Mobile: inline, Desktop: column */}
                 <div className="flex flex-row sm:flex-col items-start sm:items-end space-x-2 sm:space-x-0 sm:space-y-2 sm:ml-4 sm:min-w-24">
                   <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
                     isOverdue 

@@ -1,6 +1,5 @@
-// components/admin/DashboardStats.tsx
 import React from 'react';
-import { DashboardStats as DashboardStatsType } from '../../data/mockData';
+import type { DashboardStats as DashboardStatsType } from '../../types/assignment';
 
 interface DashboardStatsProps {
   stats: DashboardStatsType;

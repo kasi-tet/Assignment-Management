@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Assignment } from '../../data/mockData';
+import type { Assignment } from '../../types/assignment';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 interface CreateAssignmentModalProps {
@@ -22,7 +22,6 @@ export const CreateAssignmentModal: React.FC<CreateAssignmentModalProps> = ({
     assignedTo: assignment?.assignedTo || [] as string[]
   });
 
-  // Reset form when assignment changes or modal opens
   useEffect(() => {
     if (isOpen) {
       setFormData({
@@ -38,21 +37,18 @@ export const CreateAssignmentModal: React.FC<CreateAssignmentModalProps> = ({
     e.preventDefault();
     onSubmit(formData);
     onClose();
-    // Don't reset form here - let useEffect handle it when modal reopens
   };
 
   const handleClose = () => {
     onClose();
   };
 
-  // Prevent background scroll when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-    
     return () => {
       document.body.style.overflow = 'unset';
     };
@@ -62,9 +58,7 @@ export const CreateAssignmentModal: React.FC<CreateAssignmentModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto">
-      {/* Enhanced mobile container */}
       <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto mx-auto my-auto sm:my-0">
-        {/* Sticky header with better mobile handling */}
         <div className="flex justify-between items-center p-4 sm:p-6 border-b border-gray-200 sticky top-0 bg-white z-10 shadow-sm">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-900 truncate pr-3">
             {assignment ? 'Edit Assignment' : 'Create New Assignment'}
@@ -78,7 +72,6 @@ export const CreateAssignmentModal: React.FC<CreateAssignmentModalProps> = ({
           </button>
         </div>
 
-        {/* Form with enhanced mobile UX */}
         <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           <div>
             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
@@ -137,7 +130,6 @@ export const CreateAssignmentModal: React.FC<CreateAssignmentModalProps> = ({
             )}
           </div>
 
-          {/* Enhanced action buttons with better mobile UX */}
           <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-3 space-y-2 space-y-reverse sm:space-y-0 pt-4 sm:pt-6 border-t border-gray-200 sticky bottom-0 bg-white pb-2 sm:pb-0">
             <button
               type="button"

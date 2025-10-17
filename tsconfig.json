@@ -4,6 +4,7 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "noEmit": true,
+    "jsx": "react-jsx",
     "isolatedModules": true
   }
 }
